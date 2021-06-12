@@ -1,12 +1,12 @@
 {
   "private": true,
-  "name": "remix-app-template",
+  "name": "rate-my-cache",
   "description": "",
   "license": "",
   "scripts": {
     "build": "remix build",
     "dev": "remix dev",
-    "start": "arc sandbox"
+    "start": "remix start"
   },
   "dependencies": {
     "@remix-run/react": "^0.17.5",
@@ -14,9 +14,7 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^6.0.0-beta.0",
     "remix": "^0.17.5",
-    "@architect/functions": "^3.13.3",
-    "@remix-run/architect": "^0.17.5",
-    "aws-sdk": "2.796.0"
+    "@remix-run/core": "^0.17.5"
   },
   "devDependencies": {
     "@remix-run/dev": "^0.17.5",
