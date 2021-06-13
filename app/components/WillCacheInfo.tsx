@@ -37,7 +37,7 @@ export default function WillCacheInfo({
       cacheInformation.willCacheReason === "no-caching-enabled" ? (
         <p>
           This response cannot be cached because the server did not respond with
-          any caching headers such as <code>Cache-Control</code> or{" "}
+          any valid caching headers such as <code>Cache-Control</code> or{" "}
           <code>ETag</code>.
         </p>
       ) : null}

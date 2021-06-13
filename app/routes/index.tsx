@@ -85,13 +85,54 @@ export default function Index() {
 
               <WillCacheInfo cacheInformation={data.cacheInformation} />
               <div className="result">
-                {data.cacheInformation.hasCachingDirective
-                  ? "✅ This resource has a caching directive."
-                  : "❌ This resource does not have a caching directive."}
-                {data.cacheInformation.cachingDirective && (
+                {data.cacheInformation.hasCacheControl
+                  ? "✅ This resource has a cache control header."
+                  : "❌ This resource does not have a cache control header."}
+                {data.cacheInformation.cacheControlHeader && (
                   <pre>
-                    Cache-Control: {data.cacheInformation.cachingDirective}
+                    Cache-Control: {data.cacheInformation.cacheControlHeader}
                   </pre>
+                )}
+                {data.cacheInformation.cacheControlDirectives && (
+                  <div>
+                    {data.cacheInformation.cacheControlDirectives.public && (
+                      <p>🌐 Public</p>
+                    )}
+                    {data.cacheInformation.cacheControlDirectives.private && (
+                      <p>🔒 Private</p>
+                    )}
+                    {data.cacheInformation.cacheControlDirectives.maxAge !==
+                      undefined && <p>⏳ Max Age</p>}
+                    {data.cacheInformation.cacheControlDirectives
+                      .sharedMaxAge !== undefined && <p>⌛ Shared Max Age</p>}
+                    {data.cacheInformation.cacheControlDirectives.immutable && (
+                      <p>🧊 Immutable</p>
+                    )}
+                    {data.cacheInformation.cacheControlDirectives.maxStale !==
+                      undefined && <p>😑 Max Stale</p>}
+                    {data.cacheInformation.cacheControlDirectives.minFresh !==
+                      undefined && <p>😎 Min Fresh</p>}
+                    {data.cacheInformation.cacheControlDirectives.noCache && (
+                      <p>💾 No Cache</p>
+                    )}
+                    {data.cacheInformation.cacheControlDirectives.noStore && (
+                      <p>⛔ No Store</p>
+                    )}
+                    {data.cacheInformation.cacheControlDirectives
+                      .noTransform && <p>✨ No Transform</p>}
+                    {data.cacheInformation.cacheControlDirectives
+                      .onlyIfCached && <p>❓ Only If Cached</p>}
+                    {data.cacheInformation.cacheControlDirectives
+                      .mustRevalidate && <p>❗ Must Revalidate</p>}
+                    {data.cacheInformation.cacheControlDirectives
+                      .proxyRevalidate && <p>⁉ Proxy Revalidate</p>}
+                    {data.cacheInformation.cacheControlDirectives
+                      .staleIfError !== undefined && <p>🆘 Stale If Error</p>}
+                    {data.cacheInformation.cacheControlDirectives
+                      .staleWhileRevalidate !== undefined && (
+                      <p>🔁 Stale While Revalidate</p>
+                    )}
+                  </div>
                 )}
               </div>
               <div className="result">
