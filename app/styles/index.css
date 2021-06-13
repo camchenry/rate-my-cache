@@ -12,6 +12,10 @@ form {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+form label {
+  display: block;
+  font-weight: bold;
+}
 
 .results {
   margin-top: 1rem;

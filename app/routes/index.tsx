@@ -66,7 +66,15 @@ export default function Index() {
     <div className="container">
       <h1>Rate My Cache</h1>
       <form action="" method="get">
-        <input type="url" name="url" placeholder="Enter a URL" size={60} />
+        <label htmlFor="url">URL</label>
+        <input
+          type="url"
+          id="url"
+          name="url"
+          placeholder="Enter a URL"
+          defaultValue={data.state === "success" ? data.url : undefined}
+          size={60}
+        />
       </form>
       {data.state !== "no-url" && (
         <div className="results">
