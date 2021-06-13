@@ -1,4 +1,9 @@
-import { CacheInformation, parseCacheHeaders } from "./cache";
+import {
+  CacheInformation,
+  parseCacheHeaders,
+  getWillCache,
+  WillCache,
+} from "./cache";
 
 it("detects the presence of caching header", () => {
   expect(
@@ -39,6 +44,7 @@ it("determines whether a response will be cached or not", () => {
     )
   ).toMatchObject<Partial<CacheInformation>>({
     willCache: true,
+    willCacheReason: "cache-control",
   });
   expect(
     parseCacheHeaders(
@@ -48,6 +54,7 @@ it("determines whether a response will be cached or not", () => {
     )
   ).toMatchObject<Partial<CacheInformation>>({
     willCache: true,
+    willCacheReason: "cache-control",
   });
   expect(
     parseCacheHeaders(
@@ -57,6 +64,7 @@ it("determines whether a response will be cached or not", () => {
     )
   ).toMatchObject<Partial<CacheInformation>>({
     willCache: true,
+    willCacheReason: "cache-control",
   });
   expect(
     parseCacheHeaders(
@@ -66,6 +74,7 @@ it("determines whether a response will be cached or not", () => {
     )
   ).toMatchObject<Partial<CacheInformation>>({
     willCache: true,
+    willCacheReason: "cache-control",
   });
   expect(
     parseCacheHeaders(
@@ -75,6 +84,7 @@ it("determines whether a response will be cached or not", () => {
     )
   ).toMatchObject<Partial<CacheInformation>>({
     willCache: true,
+    willCacheReason: "cache-control",
   });
   expect(
     parseCacheHeaders(
@@ -84,5 +94,64 @@ it("determines whether a response will be cached or not", () => {
     )
   ).toMatchObject<Partial<CacheInformation>>({
     willCache: true,
+    willCacheReason: "cache-control",
+  });
+});
+
+it("detects etag responses as cacheable", () => {
+  expect(
+    parseCacheHeaders(
+      new Headers({
+        etag: "abc123",
+      })
+    )
+  ).toMatchObject<Partial<CacheInformation>>({
+    willCache: true,
+    willCacheReason: "etag",
+  });
+});
+
+describe("getWillCache", () => {
+  it("returns false when no caching is enabled", () => {
+    expect(getWillCache(new Headers())).toEqual<WillCache>({
+      willCache: false,
+      willCacheReason: "no-caching-enabled",
+    });
+  });
+  it("returns true cache-control is returned", () => {
+    expect(
+      getWillCache(
+        new Headers({
+          "Cache-Control": "public, max-age=0",
+        })
+      )
+    ).toEqual<WillCache>({
+      willCache: true,
+      willCacheReason: "cache-control",
+    });
+  });
+  it("returns false cache-control: no-store is returned", () => {
+    expect(
+      getWillCache(
+        new Headers({
+          "Cache-Control": "no-store",
+        })
+      )
+    ).toEqual<WillCache>({
+      willCache: false,
+      willCacheReason: "no-store",
+    });
+  });
+  it("returns true when an entity tag is returned", () => {
+    expect(
+      getWillCache(
+        new Headers({
+          ETag: "abc123",
+        })
+      )
+    ).toEqual<WillCache>({
+      willCache: true,
+      willCacheReason: "etag",
+    });
   });
 });

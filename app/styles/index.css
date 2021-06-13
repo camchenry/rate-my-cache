@@ -25,3 +25,7 @@ form {
 .result + .result {
   margin-top: 1rem;
 }
+
+p + p {
+  margin-top: 1rem;
+}

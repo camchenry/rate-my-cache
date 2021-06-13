@@ -11,3 +11,8 @@
 body {
   font-family: sans-serif;
 }
+
+p {
+  padding: 0;
+  margin: 0;
+}

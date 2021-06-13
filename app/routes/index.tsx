@@ -29,8 +29,6 @@ export type LoaderData = Readonly<
 >;
 
 export const loader: LoaderFunction = async ({
-  context,
-  params,
   request,
 }): Promise<LoaderData> => {
   try {
@@ -77,14 +75,52 @@ export default function Index() {
               <h2>Results for {data.url}</h2>
 
               <div className="result">
+                <p>
+                  {data.cacheInformation.willCache
+                    ? "✅ This resource can be cached."
+                    : "❌ This resource cannot be cached."}
+                </p>
+                {data.cacheInformation.willCache &&
+                data.cacheInformation.willCacheReason === "cache-control" ? (
+                  <p>
+                    This response can be cached because of a directive in the{" "}
+                    <code>Cache-Control</code> header.
+                  </p>
+                ) : null}
+                {data.cacheInformation.willCache &&
+                data.cacheInformation.willCacheReason === "etag" ? (
+                  <p>
+                    This response can be cached because the server responded
+                    with an <code>ETag</code> header.
+                  </p>
+                ) : null}
+                {!data.cacheInformation.willCache &&
+                data.cacheInformation.willCacheReason === "no-store" ? (
+                  <p>
+                    This response cannot be cached because the server responded
+                    with <code>no-store</code> in the <code>Cache-Control</code>{" "}
+                    header.
+                  </p>
+                ) : null}
+                {!data.cacheInformation.willCache &&
+                data.cacheInformation.willCacheReason ===
+                  "no-caching-enabled" ? (
+                  <p>
+                    This response cannot be cached because the server did not
+                    respond with any caching headers such as{" "}
+                    <code>Cache-Control</code> or <code>ETag</code>.
+                  </p>
+                ) : null}
+              </div>
+              <div className="result">
                 {data.cacheInformation.hasCachingDirective
                   ? "✅ This resource has a caching directive."
                   : "❌ This resource does not have a caching directive."}
-              </div>
-              <div className="result">
-                {data.cacheInformation.willCache
-                  ? "✅ This resource will be cached."
-                  : "❌ This resource will not be cached."}
+                {data.cacheInformation.cachingDirective && (
+                  <pre>
+                    Cache-Control: {data.cacheInformation.cachingDirective}
+                  </pre>
+                )}
               </div>
             </div>
           ) : (
