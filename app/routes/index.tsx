@@ -1,6 +1,7 @@
 import type { MetaFunction, LinksFunction, LoaderFunction } from "remix";
 import { useRouteData } from "remix";
 import { CacheInformation, parseCacheHeaders } from "../services/cache";
+import WillCacheInfo from "../components/WillCacheInfo";
 
 import stylesUrl from "../styles/index.css";
 
@@ -82,44 +83,7 @@ export default function Index() {
             <div>
               <h2>Results for {data.url}</h2>
 
-              <div className="result">
-                <p>
-                  {data.cacheInformation.willCache
-                    ? "✅ This resource can be cached."
-                    : "❌ This resource cannot be cached."}
-                </p>
-                {data.cacheInformation.willCache &&
-                data.cacheInformation.willCacheReason === "cache-control" ? (
-                  <p>
-                    This response can be cached because of a directive in the{" "}
-                    <code>Cache-Control</code> header.
-                  </p>
-                ) : null}
-                {data.cacheInformation.willCache &&
-                data.cacheInformation.willCacheReason === "etag" ? (
-                  <p>
-                    This response can be cached because the server responded
-                    with an <code>ETag</code> header.
-                  </p>
-                ) : null}
-                {!data.cacheInformation.willCache &&
-                data.cacheInformation.willCacheReason === "no-store" ? (
-                  <p>
-                    This response cannot be cached because the server responded
-                    with <code>no-store</code> in the <code>Cache-Control</code>{" "}
-                    header.
-                  </p>
-                ) : null}
-                {!data.cacheInformation.willCache &&
-                data.cacheInformation.willCacheReason ===
-                  "no-caching-enabled" ? (
-                  <p>
-                    This response cannot be cached because the server did not
-                    respond with any caching headers such as{" "}
-                    <code>Cache-Control</code> or <code>ETag</code>.
-                  </p>
-                ) : null}
-              </div>
+              <WillCacheInfo cacheInformation={data.cacheInformation} />
               <div className="result">
                 {data.cacheInformation.hasCachingDirective
                   ? "✅ This resource has a caching directive."
