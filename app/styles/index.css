@@ -7,3 +7,21 @@
   max-width: 600px;
   margin: 0 auto;
 }
+
+form {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.results {
+  margin-top: 1rem;
+}
+
+.result {
+  padding: 1rem;
+  border: 1px solid gray;
+}
+
+.result + .result {
+  margin-top: 1rem;
+}

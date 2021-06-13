@@ -2,12 +2,12 @@
   outline: none;
 }
 
-body {
-  font-family: sans-serif;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-footer {
-  text-align: center;
-  color: #ccc;
-  padding-top: 80px;
+body {
+  font-family: sans-serif;
 }
