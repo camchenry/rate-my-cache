@@ -9,7 +9,7 @@ export let links: LinksFunction = () => {
 };
 
 export let loader: LoaderFunction = async () => {
-  return { date: new Date() };
+  return {};
 };
 
 function Document({ children }: { children: React.ReactNode }) {
@@ -36,9 +36,6 @@ export default function App() {
   return (
     <Document>
       <Outlet />
-      <footer>
-        <p>This page was rendered at {data.date.toLocaleString()}</p>
-      </footer>
     </Document>
   );
 }
@@ -46,12 +43,8 @@ export default function App() {
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document>
-      <h1>App Error</h1>
+      <h1>Application Error</h1>
       <pre>{error.message}</pre>
-      <p>
-        Replace this UI with what you want users to see when your app throws
-        uncaught errors.
-      </p>
     </Document>
   );
 }
