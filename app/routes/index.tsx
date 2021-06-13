@@ -94,6 +94,14 @@ export default function Index() {
                   </pre>
                 )}
               </div>
+              <div className="result">
+                {data.cacheInformation.hasEntityTag
+                  ? "✅ This resource has an entity tag."
+                  : "❌ This resource does not have an entity tag."}
+                {data.cacheInformation.entityTag && (
+                  <pre>ETag: {data.cacheInformation.entityTag}</pre>
+                )}
+              </div>
             </div>
           ) : (
             <div>

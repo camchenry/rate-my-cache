@@ -13,6 +13,8 @@ export type CacheInformation = Readonly<
   | {
       hasCachingDirective: boolean;
       cachingDirective?: string | null;
+      hasEntityTag: boolean;
+      entityTag?: string | null;
     } & WillCache
 >;
 
@@ -52,10 +54,14 @@ export const parseCacheHeaders = (headers: Headers): CacheInformation => {
   const { ...willCache } = getWillCache(headers);
   const cachingDirective = headers.get("cache-control");
   const hasCachingDirective = cachingDirective !== null;
+  const entityTag = headers.get("etag");
+  const hasEntityTag = entityTag !== null;
 
   return {
     hasCachingDirective,
     cachingDirective,
+    hasEntityTag,
+    entityTag,
     ...willCache,
   };
 };

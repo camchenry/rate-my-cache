@@ -86,28 +86,26 @@ it("determines whether a response will be cached or not", () => {
     willCache: true,
     willCacheReason: "cache-control",
   });
-  expect(
-    parseCacheHeaders(
-      new Headers({
-        "cache-control": "must-revalidate",
-      })
-    )
-  ).toMatchObject<Partial<CacheInformation>>({
-    willCache: true,
-    willCacheReason: "cache-control",
-  });
 });
 
-it("detects etag responses as cacheable", () => {
+it("detects the presence of an entity tag", () => {
   expect(
     parseCacheHeaders(
       new Headers({
-        etag: "abc123",
+        eTAG: "abc132",
       })
     )
   ).toMatchObject<Partial<CacheInformation>>({
-    willCache: true,
-    willCacheReason: "etag",
+    hasEntityTag: true,
+  });
+  expect(
+    parseCacheHeaders(
+      new Headers({
+        "Cache-Control": "something",
+      })
+    )
+  ).toMatchObject<Partial<CacheInformation>>({
+    hasEntityTag: false,
   });
 });
 
