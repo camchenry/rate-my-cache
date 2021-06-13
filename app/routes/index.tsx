@@ -3,23 +3,21 @@ import { useRouteData } from "remix";
 
 import stylesUrl from "../styles/index.css";
 
-export let meta: MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return {
     title: "Rate My Cache",
   };
 };
 
-export let links: LinksFunction = () => {
+export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesUrl }];
 };
 
-export let loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async () => {
   return {};
 };
 
 export default function Index() {
-  let data = useRouteData();
-
   return (
     <div className="container">
       <h1>Rate My Cache</h1>

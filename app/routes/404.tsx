@@ -1,6 +1,6 @@
 import type { MetaFunction } from "remix";
 
-export let meta: MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return { title: "404 Not Found" };
 };
 
