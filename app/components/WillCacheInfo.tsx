@@ -1,4 +1,5 @@
 import { CacheInformation } from "../services/cache";
+import Result from "./Result";
 
 export default function WillCacheInfo({
   cacheInformation,
@@ -6,12 +7,14 @@ export default function WillCacheInfo({
   cacheInformation: CacheInformation;
 }) {
   return (
-    <div className="result">
-      <p>
-        {cacheInformation.willCache
-          ? "✅ This resource can be cached."
-          : "❌ This resource cannot be cached."}
-      </p>
+    <Result
+      icon={cacheInformation.willCache ? "✅" : "❌"}
+      header={
+        cacheInformation.willCache
+          ? "This resource can be cached."
+          : "This resource cannot be cached."
+      }
+    >
       {cacheInformation.willCache &&
       cacheInformation.willCacheReason === "cache-control" ? (
         <p>
@@ -41,6 +44,6 @@ export default function WillCacheInfo({
           <code>ETag</code>.
         </p>
       ) : null}
-    </div>
+    </Result>
   );
 }

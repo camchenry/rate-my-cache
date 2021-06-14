@@ -4,6 +4,8 @@ import { CacheInformation, parseCacheHeaders } from "../services/cache";
 import WillCacheInfo from "../components/WillCacheInfo";
 
 import stylesUrl from "../styles/index.css";
+import Result from "../components/Result";
+import Directive from "../components/Directive";
 
 export const meta: MetaFunction = () => {
   return {
@@ -74,7 +76,7 @@ export default function Index() {
           name="url"
           placeholder="Enter a URL"
           defaultValue={data.state === "success" ? data.url : undefined}
-          size={60}
+          size={50}
         />
       </form>
       {data.state !== "no-url" && (
@@ -84,39 +86,120 @@ export default function Index() {
               <h2>Results for {data.url}</h2>
 
               <WillCacheInfo cacheInformation={data.cacheInformation} />
-              <div className="result">
-                {data.cacheInformation.hasCacheControl
-                  ? "✅ This resource has a cache control header."
-                  : "❌ This resource does not have a cache control header."}
+              <Result
+                icon={data.cacheInformation.hasCacheControl ? "✅" : "❌"}
+                header={
+                  data.cacheInformation.hasCacheControl
+                    ? "This resource has a cache control header."
+                    : "This resource does not have a cache control header."
+                }
+              >
                 {data.cacheInformation.cacheControlHeader && (
                   <pre>
                     Cache-Control: {data.cacheInformation.cacheControlHeader}
                   </pre>
                 )}
                 {data.cacheInformation.cacheControlDirectives && (
-                  <div>
+                  <ul className="directive-list">
                     {data.cacheInformation.cacheControlDirectives.public && (
-                      <p>🌐 Public</p>
+                      <Directive icon={"🌐"} name="Public">
+                        The <code>public</code> directive indicates that any
+                        cache may cache the response, even if it would not
+                        typically be cacheable.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.5">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
                     )}
                     {data.cacheInformation.cacheControlDirectives.private && (
-                      <p>🔒 Private</p>
+                      <Directive icon={"🔒"} name="Private">
+                        The <code>private</code> directive indicates that the
+                        response is intended only for a single user and must not
+                        be stored in any shared cache. Typically, this means
+                        that the response will only be stored in the browser
+                        cache.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.6">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
                     )}
                     {data.cacheInformation.cacheControlDirectives.maxAge !==
-                      undefined && <p>⏳ Max Age</p>}
+                      undefined && (
+                      <Directive icon={"⏳"} name="Max Age">
+                        The <code>max-age</code> directive indicates the
+                        response should be considered stale after{" "}
+                        <strong>
+                          {data.cacheInformation.cacheControlDirectives.maxAge}
+                        </strong>{" "}
+                        seconds.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.6">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
+                    )}
                     {data.cacheInformation.cacheControlDirectives
-                      .sharedMaxAge !== undefined && <p>⌛ Shared Max Age</p>}
+                      .sharedMaxAge !== undefined && (
+                      <Directive icon={"⌛"} name="Shared Max Age">
+                        The <code>s-maxage</code> directive indicates the
+                        response should be considered stale by <em>shared</em>{" "}
+                        caches (such as a CDN) after{" "}
+                        <strong>
+                          {
+                            data.cacheInformation.cacheControlDirectives
+                              .sharedMaxAge
+                          }
+                        </strong>{" "}
+                        seconds.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.9">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
+                    )}
                     {data.cacheInformation.cacheControlDirectives.immutable && (
-                      <p>🧊 Immutable</p>
+                      <Directive icon={"🧊"} name="Immutable">
+                        The <code>immutable</code> directive indicates the
+                        response will not change during the freshness lifetime.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc8246">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
                     )}
                     {data.cacheInformation.cacheControlDirectives.maxStale !==
                       undefined && <p>😑 Max Stale</p>}
                     {data.cacheInformation.cacheControlDirectives.minFresh !==
                       undefined && <p>😎 Min Fresh</p>}
                     {data.cacheInformation.cacheControlDirectives.noCache && (
-                      <p>💾 No Cache</p>
+                      <Directive icon={"💾"} name="No Cache">
+                        The <code>no-cache</code> directive indicates that this
+                        response may be cached, but any cached response must be
+                        validated with the origin server before it can be used.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.2">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
                     )}
                     {data.cacheInformation.cacheControlDirectives.noStore && (
-                      <p>⛔ No Store</p>
+                      <Directive icon={"⛔"} name="No Store">
+                        The <code>no-store</code> directive indicates that this
+                        response must not be stored in any cache.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.3">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
                     )}
                     {data.cacheInformation.cacheControlDirectives
                       .noTransform && <p>✨ No Transform</p>}
@@ -132,17 +215,21 @@ export default function Index() {
                       .staleWhileRevalidate !== undefined && (
                       <p>🔁 Stale While Revalidate</p>
                     )}
-                  </div>
+                  </ul>
                 )}
-              </div>
-              <div className="result">
-                {data.cacheInformation.hasEntityTag
-                  ? "✅ This resource has an entity tag."
-                  : "❌ This resource does not have an entity tag."}
+              </Result>
+              <Result
+                icon={data.cacheInformation.hasEntityTag ? "✅" : "❌"}
+                header={
+                  data.cacheInformation.hasEntityTag
+                    ? "This resource has an entity tag."
+                    : "This resource does not have an entity tag."
+                }
+              >
                 {data.cacheInformation.entityTag && (
                   <pre>ETag: {data.cacheInformation.entityTag}</pre>
                 )}
-              </div>
+              </Result>
             </div>
           ) : (
             <div>
