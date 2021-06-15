@@ -6,10 +6,27 @@ import WillCacheInfo from "../components/WillCacheInfo";
 import stylesUrl from "../styles/index.css";
 import Result from "../components/Result";
 import Directive from "../components/Directive";
+import {
+  addSeconds,
+  format,
+  formatDuration,
+  intervalToDuration,
+} from "date-fns";
+
+const formatInterval = (seconds: number) => {
+  return formatDuration(
+    intervalToDuration({
+      start: 0,
+      end: seconds * 1000,
+    })
+  );
+};
 
 export const meta: MetaFunction = () => {
   return {
     title: "Rate My Cache",
+    description:
+      "Type in a URL and receive a report telling you whether it will be cached or not, including details of exactly how the HTTP caching for the page works.",
   };
 };
 
@@ -130,12 +147,48 @@ export default function Index() {
                     {data.cacheInformation.cacheControlDirectives.maxAge !==
                       undefined && (
                       <Directive icon={"⏳"} name="Max Age">
-                        The <code>max-age</code> directive indicates the
-                        response should be considered stale after{" "}
-                        <strong>
-                          {data.cacheInformation.cacheControlDirectives.maxAge}
-                        </strong>{" "}
-                        seconds.
+                        <p>
+                          The <code>max-age</code> directive indicates the
+                          response should be considered stale{" "}
+                          {data.cacheInformation.cacheControlDirectives
+                            .maxAge === 0 ? (
+                            <strong>immediately.</strong>
+                          ) : (
+                            <>
+                              after{" "}
+                              <strong>
+                                {
+                                  data.cacheInformation.cacheControlDirectives
+                                    .maxAge
+                                }
+                              </strong>{" "}
+                              seconds (
+                              <strong>
+                                {formatInterval(
+                                  data.cacheInformation.cacheControlDirectives
+                                    .maxAge
+                                )}
+                              </strong>
+                              ).
+                            </>
+                          )}
+                        </p>
+                        <p>
+                          For example, since this response was fetched on{" "}
+                          <strong>{format(new Date(), "PPpp")},</strong> it will
+                          become stale on{" "}
+                          <strong>
+                            {format(
+                              addSeconds(
+                                new Date(),
+                                data.cacheInformation.cacheControlDirectives
+                                  .maxAge
+                              ),
+                              "PPpp"
+                            )}
+                          </strong>
+                          .
+                        </p>
                         <div className="links">
                           <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.8">
                             RFC
@@ -146,16 +199,41 @@ export default function Index() {
                     {data.cacheInformation.cacheControlDirectives
                       .sharedMaxAge !== undefined && (
                       <Directive icon={"⌛"} name="Shared Max Age">
-                        The <code>s-maxage</code> directive indicates the
-                        response should be considered stale by <em>shared</em>{" "}
-                        caches (such as a CDN) after{" "}
-                        <strong>
-                          {
-                            data.cacheInformation.cacheControlDirectives
-                              .sharedMaxAge
-                          }
-                        </strong>{" "}
-                        seconds.
+                        <p>
+                          The <code>s-maxage</code> directive indicates the
+                          response should be considered stale by <em>shared</em>{" "}
+                          caches (such as a CDN) after{" "}
+                          <strong>
+                            {
+                              data.cacheInformation.cacheControlDirectives
+                                .sharedMaxAge
+                            }
+                          </strong>{" "}
+                          seconds (
+                          <strong>
+                            {formatInterval(
+                              data.cacheInformation.cacheControlDirectives
+                                .sharedMaxAge
+                            )}
+                          </strong>
+                          ).
+                        </p>
+                        <p>
+                          For example, since this response was fetched on{" "}
+                          <strong>{format(new Date(), "PPpp")},</strong> it will
+                          become stale for shared caches on{" "}
+                          <strong>
+                            {format(
+                              addSeconds(
+                                new Date(),
+                                data.cacheInformation.cacheControlDirectives
+                                  .sharedMaxAge
+                              ),
+                              "PPpp"
+                            )}
+                          </strong>
+                          .
+                        </p>
                         <div className="links">
                           <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.9">
                             RFC
@@ -283,7 +361,14 @@ export default function Index() {
                               .staleWhileRevalidate
                           }
                         </strong>{" "}
-                        seconds while it is revalidated in the background.
+                        seconds (
+                        <strong>
+                          {formatInterval(
+                            data.cacheInformation.cacheControlDirectives
+                              .staleWhileRevalidate
+                          )}
+                        </strong>
+                        ) while it is revalidated in the background.
                         <div className="links">
                           <a href="https://datatracker.ietf.org/doc/html/rfc5861#section-3">
                             RFC
