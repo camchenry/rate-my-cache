@@ -60,7 +60,6 @@ export const getWillCache = (headers: Headers): WillCache => {
         directives.minFresh,
         directives.mustRevalidate,
         directives.noCache,
-        directives.noTransform,
         directives.onlyIfCached,
         directives.proxyRevalidate,
         directives.sharedMaxAge,

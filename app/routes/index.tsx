@@ -355,9 +355,9 @@ export default function Index() {
                       .noTransform && (
                       <Directive icon={"✨"} name="No Transform">
                         The <code>no-transform</code> directive indicates that
-                        any intermediate cache must not be transform this
-                        response (for example, change content type, compress
-                        data, filter responses, etc.)
+                        any intermediate cache must not transform this response
+                        (for example: change content type, compress data, filter
+                        responses, etc.)
                         <div className="links">
                           <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.1.6">
                             RFC
