@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import type { LinksFunction, LoaderFunction } from "remix";
-import { Links, LiveReload, Meta, Scripts } from "remix";
+import { Links, LiveReload, Meta } from "remix";
 import stylesUrl from "./styles/global.css";
 
 export const links: LinksFunction = () => {

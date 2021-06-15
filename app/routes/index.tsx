@@ -1,4 +1,9 @@
-import type { MetaFunction, LinksFunction, LoaderFunction } from "remix";
+import type {
+  MetaFunction,
+  LinksFunction,
+  LoaderFunction,
+  HeadersFunction,
+} from "remix";
 import { useRouteData } from "remix";
 import { CacheInformation, parseCacheHeaders } from "../services/cache";
 import WillCacheInfo from "../components/WillCacheInfo";
@@ -20,6 +25,13 @@ const formatInterval = (seconds: number) => {
       end: seconds * 1000,
     })
   );
+};
+
+export const headers: HeadersFunction = () => {
+  return {
+    "Cache-Control":
+      "max-age=600, s-maxage=31536000, stale-while-revalidate=86400",
+  };
 };
 
 export const meta: MetaFunction = () => {
@@ -83,7 +95,10 @@ export const loader: LoaderFunction = async ({
 const NoUrl = () => (
   <div className="no-url">
     <h2>About</h2>
-    <p>Type in a URL to learn the details of exactly how the HTTP caching for the page works and whether it will be cached or not.</p>
+    <p>
+      Type in a URL to learn the details of exactly how the HTTP caching for the
+      page works and whether it will be cached or not.
+    </p>
     <h2>Examples</h2>
     <ul>
       <li>
@@ -112,6 +127,11 @@ const NoUrl = () => (
       </li>
       <li>
         <a href="/?url=https%3A%2F%2Fgithub.com">GitHub</a>
+      </li>
+      <li>
+        <a href="/?url=https%3A%2F%2Frate-my-cache.netlify.app">
+          Rate My Cache
+        </a>
       </li>
       <li>
         <a href="/?url=https%3A%2F%2Fremix.run">Remix</a>
@@ -145,7 +165,7 @@ export default function Index() {
         <div className="results">
           {data.state === "success" ? (
             <div>
-              <h2 style={{ textAlign: 'center'}}>📋 {data.url}</h2>
+              <h2 style={{ textAlign: "center" }}>📋 {data.url}</h2>
 
               <WillCacheInfo cacheInformation={data.cacheInformation} />
               <Result
@@ -247,22 +267,29 @@ export default function Index() {
                         <p>
                           The <code>s-maxage</code> directive indicates the
                           response should be considered stale by <em>shared</em>{" "}
-                          caches (such as a CDN) {data.cacheInformation.cacheControlDirectives.sharedMaxAge === 0 ? (<strong>immediately.</strong>) : (<>after{" "}
-                          <strong>
-                            {
-                              data.cacheInformation.cacheControlDirectives
-                                .sharedMaxAge
-                            }
-                          </strong>{" "}
-                          seconds (
-                          <strong>
-                            {formatInterval(
-                              data.cacheInformation.cacheControlDirectives
-                                .sharedMaxAge
-                            )}
-                          </strong>
-                          ).
-                          </>)}
+                          caches (such as a CDN){" "}
+                          {data.cacheInformation.cacheControlDirectives
+                            .sharedMaxAge === 0 ? (
+                            <strong>immediately.</strong>
+                          ) : (
+                            <>
+                              after{" "}
+                              <strong>
+                                {
+                                  data.cacheInformation.cacheControlDirectives
+                                    .sharedMaxAge
+                                }
+                              </strong>{" "}
+                              seconds (
+                              <strong>
+                                {formatInterval(
+                                  data.cacheInformation.cacheControlDirectives
+                                    .sharedMaxAge
+                                )}
+                              </strong>
+                              ).
+                            </>
+                          )}
                         </p>
                         <p>
                           For example, since this response was fetched on{" "}
@@ -279,7 +306,6 @@ export default function Index() {
                             )}
                           </strong>
                           .
-                          }
                         </p>
                         <div className="links">
                           <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.9">
