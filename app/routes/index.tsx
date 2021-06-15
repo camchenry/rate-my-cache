@@ -26,7 +26,7 @@ export const meta: MetaFunction = () => {
   return {
     title: "Rate My Cache",
     description:
-      "Type in a URL and receive a report telling you whether it will be cached or not, including details of exactly how the HTTP caching for the page works.",
+      "Type in a URL to learn the details of exactly how the HTTP caching for the page works and whether it will be cached or not.",
   };
 };
 
@@ -81,7 +81,9 @@ export const loader: LoaderFunction = async ({
 };
 
 const NoUrl = () => (
-  <div>
+  <div className="no-url">
+    <h2>About</h2>
+    <p>Type in a URL to learn the details of exactly how the HTTP caching for the page works and whether it will be cached or not.</p>
     <h2>Examples</h2>
     <ul>
       <li>
@@ -131,21 +133,19 @@ export default function Index() {
         </a>
       </h1>
       <form action="" method="get">
-        <label htmlFor="url">URL</label>
         <input
+          className="url-input"
           type="url"
-          id="url"
           name="url"
           placeholder="Enter a URL"
           defaultValue={data.state === "success" ? data.url : undefined}
-          size={50}
         />
       </form>
       {data.state !== "no-url" ? (
         <div className="results">
           {data.state === "success" ? (
             <div>
-              <h2>Results for {data.url}</h2>
+              <h2 style={{ textAlign: 'center'}}>📋 {data.url}</h2>
 
               <WillCacheInfo cacheInformation={data.cacheInformation} />
               <Result

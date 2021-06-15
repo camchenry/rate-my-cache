@@ -4,8 +4,11 @@
  * pages!
  */
 .container {
-  max-width: 600px;
-  margin: 0 auto;
+  --max-width: 70ch;
+  padding: 5vh clamp(1rem, 5vw, 3rem) 1rem;
+  width: min(100%, var(--max-width));
+  margin-left: auto;
+  margin-right: auto;
 }
 
 h1 {
@@ -21,8 +24,11 @@ form label {
   font-weight: bold;
   padding-right: 1rem;
 }
-form input {
-  padding: 0.25rem;
+.url-input {
+  padding: 0.3rem;
+  margin: 1rem 0;
+  width: 100%;
+  max-width: min(50ch, 90vw);
 }
 
 .results {
@@ -34,7 +40,6 @@ form input {
 
 .result {
   padding: 1rem;
-  border: 1px solid gray;
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr;
@@ -98,4 +103,9 @@ p + p {
 }
 .directive .links {
   margin-top: 1rem;
+}
+
+.no-url h2,
+.no-url p {
+  margin-bottom: 1rem;
 }
