@@ -30,7 +30,6 @@ function Document({ children }: { children: React.ReactNode }) {
       <body>
         {children}
 
-        <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
@@ -41,6 +40,10 @@ export default function App() {
   return (
     <Document>
       <Outlet />
+      <footer style={{ textAlign: "center", padding: "1rem" }}>
+        Made by <a href="https://camchenry.com">Cameron McHenry</a>
+        &nbsp;&bull;&nbsp;Built with <a href="https://remix.run">Remix</a>
+      </footer>
     </Document>
   );
 }

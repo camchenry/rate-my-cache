@@ -80,11 +80,56 @@ export const loader: LoaderFunction = async ({
   }
 };
 
+const NoUrl = () => (
+  <div>
+    <h2>Examples</h2>
+    <ul>
+      <li>
+        <a href="/?url=https%3A%2F%2Frate-my-cache.netlify.app%2Fexamples%2Fno-caching">
+          Example: No Caching
+        </a>
+      </li>
+      <li>
+        <a href="/?url=https%3A%2F%2Frate-my-cache.netlify.app%2Fexamples%2Fmax-age">
+          Example: Max Age
+        </a>
+      </li>
+      <li>
+        <a href="/?url=https%3A%2F%2Frate-my-cache.netlify.app%2Fexamples%2Fstale-while-revalidate">
+          Example: Stale While Revalidate
+        </a>
+      </li>
+      <li>
+        <a href="/?url=https%3A%2F%2Fgoogle.com">Google</a>
+      </li>
+      <li>
+        <a href="/?url=https%3A%2F%2Ffacebook.com">Facebook</a>
+      </li>
+      <li>
+        <a href="/?url=https%3A%2F%2Fen.wikipedia.org">Wikipedia</a>
+      </li>
+      <li>
+        <a href="/?url=https%3A%2F%2Fgithub.com">GitHub</a>
+      </li>
+      <li>
+        <a href="/?url=https%3A%2F%2Fremix.run">Remix</a>
+      </li>
+      <li>
+        <a href="/?url=https%3A%2F%2Fcamchenry.com">Cameron McHenry</a>
+      </li>
+    </ul>
+  </div>
+);
+
 export default function Index() {
   const data = useRouteData<LoaderData>();
   return (
     <div className="container">
-      <h1>Rate My Cache</h1>
+      <h1>
+        <a href="/" style={{ textDecoration: "none", color: "inherit" }}>
+          Rate My Cache
+        </a>
+      </h1>
       <form action="" method="get">
         <label htmlFor="url">URL</label>
         <input
@@ -96,7 +141,7 @@ export default function Index() {
           size={50}
         />
       </form>
-      {data.state !== "no-url" && (
+      {data.state !== "no-url" ? (
         <div className="results">
           {data.state === "success" ? (
             <div>
@@ -202,7 +247,7 @@ export default function Index() {
                         <p>
                           The <code>s-maxage</code> directive indicates the
                           response should be considered stale by <em>shared</em>{" "}
-                          caches (such as a CDN) after{" "}
+                          caches (such as a CDN) {data.cacheInformation.cacheControlDirectives.sharedMaxAge === 0 ? (<strong>immediately.</strong>) : (<>after{" "}
                           <strong>
                             {
                               data.cacheInformation.cacheControlDirectives
@@ -217,6 +262,7 @@ export default function Index() {
                             )}
                           </strong>
                           ).
+                          </>)}
                         </p>
                         <p>
                           For example, since this response was fetched on{" "}
@@ -233,6 +279,7 @@ export default function Index() {
                             )}
                           </strong>
                           .
+                          }
                         </p>
                         <div className="links">
                           <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.9">
@@ -424,6 +471,8 @@ export default function Index() {
             </div>
           )}
         </div>
+      ) : (
+        <NoUrl />
       )}
     </div>
   );
