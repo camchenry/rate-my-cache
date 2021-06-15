@@ -137,7 +137,7 @@ export default function Index() {
                         </strong>{" "}
                         seconds.
                         <div className="links">
-                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.6">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.8">
                             RFC
                           </a>
                         </div>
@@ -179,7 +179,7 @@ export default function Index() {
                     {data.cacheInformation.cacheControlDirectives.minFresh !==
                       undefined && <p>😎 Min Fresh</p>}
                     {data.cacheInformation.cacheControlDirectives.noCache && (
-                      <Directive icon={"💾"} name="No Cache">
+                      <Directive icon={"♻️"} name="No Cache">
                         The <code>no-cache</code> directive indicates that this
                         response may be cached, but any cached response must be
                         validated with the origin server before it can be used.
@@ -191,7 +191,7 @@ export default function Index() {
                       </Directive>
                     )}
                     {data.cacheInformation.cacheControlDirectives.noStore && (
-                      <Directive icon={"⛔"} name="No Store">
+                      <Directive icon={"🚫"} name="No Store">
                         The <code>no-store</code> directive indicates that this
                         response must not be stored in any cache.
                         <div className="links">
@@ -202,18 +202,94 @@ export default function Index() {
                       </Directive>
                     )}
                     {data.cacheInformation.cacheControlDirectives
-                      .noTransform && <p>✨ No Transform</p>}
+                      .noTransform && (
+                      <Directive icon={"✨"} name="No Transform">
+                        The <code>no-transform</code> directive indicates that
+                        any intermediate cache must not be transform this
+                        response (for example, change content type, compress
+                        data, filter responses, etc.)
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.1.6">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
+                    )}
                     {data.cacheInformation.cacheControlDirectives
-                      .onlyIfCached && <p>❓ Only If Cached</p>}
+                      .onlyIfCached && (
+                      <Directive icon={"❓"} name="Only If Cached">
+                        The <code>only-if-cached</code> directive indicates that
+                        only a cached version of the response should be
+                        returned, rather than a fresh response.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.1.7">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
+                    )}
                     {data.cacheInformation.cacheControlDirectives
-                      .mustRevalidate && <p>❗ Must Revalidate</p>}
+                      .mustRevalidate && (
+                      <Directive icon={"❗"} name="Must Revalidate">
+                        The <code>must-revalidate</code> directive indicates
+                        that when the response becomes stale, the cache must
+                        revalidate the cached response before it can be used
+                        again.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.1">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
+                    )}
                     {data.cacheInformation.cacheControlDirectives
-                      .proxyRevalidate && <p>⁉ Proxy Revalidate</p>}
+                      .proxyRevalidate && (
+                      <Directive icon={"⁉️"} name="Proxy Revalidate">
+                        The <code>proxy-revalidate</code> directive indicates
+                        that when the response becomes stale, the non-private
+                        cache (such as a CDN) must revalidate the cached
+                        response before it can be used again. (This has the same
+                        meaning as <code>must-revalidate</code>, but does not
+                        apply to private caches like browser caches.)
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc7234#section-5.2.2.7">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
+                    )}
                     {data.cacheInformation.cacheControlDirectives
-                      .staleIfError !== undefined && <p>🆘 Stale If Error</p>}
+                      .staleIfError !== undefined && (
+                      <Directive icon={"🆘"} name="Stale If Error">
+                        The <code>stale-if-error</code> directive indicates that
+                        if an error occurs, then a stale version of the response
+                        may be used, despite any other freshness constraints.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc5861#section-4">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
+                    )}
                     {data.cacheInformation.cacheControlDirectives
                       .staleWhileRevalidate !== undefined && (
-                      <p>🔁 Stale While Revalidate</p>
+                      <Directive icon={"🔁"} name="Stale While Revalidate">
+                        The <code>stale-while-revalidate</code> directive
+                        indicates that after a response becomes stale, the cache
+                        may continue to serve it for up to{" "}
+                        <strong>
+                          {
+                            data.cacheInformation.cacheControlDirectives
+                              .staleWhileRevalidate
+                          }
+                        </strong>{" "}
+                        seconds while it is revalidated in the background.
+                        <div className="links">
+                          <a href="https://datatracker.ietf.org/doc/html/rfc5861#section-3">
+                            RFC
+                          </a>
+                        </div>
+                      </Directive>
                     )}
                   </ul>
                 )}
