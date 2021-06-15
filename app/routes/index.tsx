@@ -29,8 +29,7 @@ const formatInterval = (seconds: number) => {
 
 export const headers: HeadersFunction = () => {
   return {
-    "Cache-Control":
-      "max-age=600, s-maxage=31536000, stale-while-revalidate=86400",
+    "Cache-Control": "max-age=60, s-maxage=3600",
   };
 };
 
