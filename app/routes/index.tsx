@@ -303,7 +303,32 @@ export default function Index() {
                 }
               >
                 {data.cacheInformation.entityTag && (
-                  <pre>ETag: {data.cacheInformation.entityTag}</pre>
+                  <>
+                    <p>
+                      <pre>ETag: {data.cacheInformation.entityTag}</pre>
+                    </p>
+                    <p>
+                      Since this response has an entity tag, the entity tag may
+                      be used to revalidate a response when it becomes stale.
+                      The first time the resource is requested by the client,
+                      the response will be cached along with the entity tag. On
+                      any subsequent requests, if the cached response is still
+                      fresh, then the cached response will be served.
+                    </p>
+                    <p>
+                      However, if the cached response is stale, then on a
+                      subsequent request, the client may send the HTTP header{" "}
+                      <pre>
+                        If-None-Match: {data.cacheInformation.entityTag}
+                      </pre>{" "}
+                      to see if the response has changed. If the response has
+                      not changed, the server will return a status code of{" "}
+                      <code>304 Not Modified</code> to indicate the response is
+                      still fresh. Otherwise, if the response has changed, then
+                      the server will return the fresh, full response which can
+                      be cached again.
+                    </p>
+                  </>
                 )}
               </Result>
             </div>
